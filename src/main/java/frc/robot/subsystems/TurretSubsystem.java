@@ -42,7 +42,7 @@ public class TurretSubsystem extends SubsystemBase {
  
   public double getEncoderVal(){
     turretVal = e_turret.getValue();
-    turretVal = turretVal - 425;
+    // turretVal = turretVal - 425;
     System.out.println(turretVal);
     return turretVal;
   }
