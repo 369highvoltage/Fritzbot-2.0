@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.OI;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
@@ -20,6 +21,7 @@ public class TurretSubsystem extends SubsystemBase {
    // public Encoder e_turret;
   // public Talon m_feeder;
   double turretVal;
+  double angle;
   /**
    * Creates a new TurretSubsystem.
    */
@@ -29,23 +31,35 @@ public class TurretSubsystem extends SubsystemBase {
     //e_turret = new AnalogEncoder(new AnalogInput(0));
     // e_turret.setDistancePerRotation(360/5);
     
-    // m_feeder = new Talon(5);
+    // m_feeder = new Talon(5);i
   }
 
   public void resetEncoder() {
     e_turret.resetAccumulator();
   }
 
+
   public void turret(double axis){
-    m_turret.set(axis);
+    if (Math.abs(axis) >= .25 && axis >= 0) {
+    m_turret.set(.25);
+    }
+    else if (Math.abs(axis) >= .25 && axis <= 0){
+    m_turret.set(-.25);
+    }
+    else {
+      m_turret.set(axis);
+    }    
   }
- 
-  public double getEncoderVal(){
+
+    public double getEncoderVal(){
     turretVal = e_turret.getValue();
     turretVal = turretVal - 425;
     System.out.println(turretVal);
     return turretVal;
   }
+
+
+
 
   // public void feeder(double speed){
   //   m_feeder.set(speed);
