@@ -48,7 +48,15 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void turret(double axis){
-    m_turret.set(axis);
+    if (Math.abs(axis) >= .25 && axis >= 0) {
+    m_turret.set(.25);
+    }
+    else if (Math.abs(axis) >= .25 && axis <= 0){
+    m_turret.set(-.25);
+    }
+    else {
+      m_turret.set(axis);
+    }    
   }
 
   public void moveByDegrees (double angle, double s_angle, double d_angle, TurretSubsystem turret) {
