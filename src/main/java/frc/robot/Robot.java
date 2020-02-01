@@ -211,18 +211,20 @@ public class Robot extends TimedRobot {
     if (oi.joy.getRawButtonPressed(3)) {
       s_turret.resetEncoder();
     }
+
     turretVal = oi.getLeftTurretAxis();
+    turretVal2 = oi.getRightTurretAxis();
+
     turretVal = turretVal/2+0.5;
     turretVal = turretVal*0.25;
-    turretVal2 = oi.getRightTurretAxis();
     turretVal2 = turretVal2/2+0.5;
     turretVal2 = turretVal2*(0.25);
-    turretVal2= turretVal-turretVal2;
+    turretVal2 = turretVal - turretVal2;
+    
     s_turret.turret(turretVal2);
-
     s_turret.getEncoderVal();
 
-
+    
 
     
   }
