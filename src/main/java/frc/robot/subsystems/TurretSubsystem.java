@@ -38,14 +38,6 @@ public class TurretSubsystem extends SubsystemBase {
     e_turret.resetAccumulator();
   }
 
-  public double turretSpeed (double turretVal, double turretVal2){
-    turretVal = turretVal/2+0.5;
-    turretVal = turretVal*0.25;
-    turretVal2 = turretVal2/2+0.5;
-    turretVal2 = turretVal2*(0.25);
-    turretVal2 = turretVal - turretVal2;
-    return turretVal2;
-  }
 
   public void turret(double axis){
     if (Math.abs(axis) >= .25 && axis >= 0) {
@@ -57,19 +49,6 @@ public class TurretSubsystem extends SubsystemBase {
     else {
       m_turret.set(axis);
     }    
-  }
-
-  public void moveByDegrees (double angle, double s_angle, double d_angle, TurretSubsystem turret) {
-    if (d_angle <= 0){
-      m_turret.set(-.25);
-    }
-    else if (d_angle >= 0) {
-      m_turret.set(.25);
-    }
-    else if (d_angle - angle >= s_angle){
-      m_turret.set(0);
-      s_angle = turret.getEncoderVal();
-    }   
   }
 
     public double getEncoderVal(){
