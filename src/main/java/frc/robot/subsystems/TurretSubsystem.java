@@ -35,20 +35,18 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void resetEncoder() {
-    e_turret.resetAccumulator();
+    e_turret.setAccumulatorInitialValue(e_turret.getValue());
   }
 
-
-  public void turret(double axis){
-    if (Math.abs(axis) >= .25 && axis >= 0) {
-    m_turret.set(.25);
+ // -1 ... 1
+  public void setTurretSpeed(double axis){
+    if (axis > 1) {
+      axis = 1;
     }
-    else if (Math.abs(axis) >= .25 && axis <= 0){
-    m_turret.set(-.25);
+    else if (axis < -1) {
+      axis = -1;
     }
-    else {
-      m_turret.set(axis);
-    }    
+    m_turret.set(.25*axis);
   }
 
     public double getEncoderVal(){
@@ -57,6 +55,8 @@ public class TurretSubsystem extends SubsystemBase {
     System.out.println(turretVal);
     return turretVal;
   }
+
+  
 
 
 

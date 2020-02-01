@@ -14,7 +14,6 @@ public class MoveByxDegreesCommand extends CommandBase {
   private final TurretSubsystem turret_subsystem;
   double encoderValInit;
   double desiredAngle;
-  double currentEncoderVal;
 
 
   public MoveByxDegreesCommand(TurretSubsystem subsystem, double angle) {
@@ -36,12 +35,12 @@ public class MoveByxDegreesCommand extends CommandBase {
   @Override
   public void execute() {
     if(desiredAngle>0){
-      turret_subsystem.setSpeed();//get code from Mariia, positive speed
+      turret_subsystem.setTurretSpeed(1);
     }
     else if(desiredAngle<0){
-      turret_subsystem.setSpeed();//negative speed
+      turret_subsystem.setTurretSpeed(-1);
     }
-    currentEncoderVal = turret_subsystem.getEncoderVal();
+    
     
   }
 
@@ -49,13 +48,13 @@ public class MoveByxDegreesCommand extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    turret_subsystem.setSpeed(0);
+    turret_subsystem.setTurretSpeed(0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
-    return (currentEncoderVal - desiredAngle>= encoderValInit);
+    return (turret_subsystem.getEncoderVal() - desiredAngle >= encoderValInit);
   }
 
 
