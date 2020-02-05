@@ -25,6 +25,10 @@ import frc.robot.utils.OI;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.commands.MoveByxDegreesCommand;
+import edu.wpi.first.wpilibj.Talon;
+import com.ctre.phoenix.*;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 
 /**
@@ -51,6 +55,9 @@ public class Robot extends TimedRobot {
     private TurretSubsystem s_turret;
     double turretVal;
     double turretVal2;
+    public MoveByxDegreesCommand c_moveByxDegrees;
+    TalonSRX m_shooter;
+    double shooterSpeedL;
   // private ShootingCommand scomm;
  // private JoystickCommand jcomm;
 
@@ -83,6 +90,8 @@ public class Robot extends TimedRobot {
     cam = new CameraSubsystem();
     oi = new OI();
     driveCommand = new DriveCommand(driveSys, oi);
+    m_shooter = new TalonSRX(0);
+    
     // scomm = new ShootingCommand(shooterSys);
    // jcomm = new JoystickCommand(driveSys, shooterSys, oi, scomm);
     cam.Vision();
@@ -102,6 +111,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    s_turret.debug();
   }
 
   /**
@@ -195,6 +205,8 @@ public class Robot extends TimedRobot {
     cam.setCameraMode(CameraMode.eDriver);
 
     driveSys.setDefaultCommand(driveCommand);
+    new JoystickButton(oi.joy, 4)
+        .whenPressed(new MoveByxDegreesCommand(s_turret, -10));
     //oi.setDefaultCommand(jcomm);
   }
 
@@ -208,15 +220,17 @@ public class Robot extends TimedRobot {
     // shooterSys.ColorSensor();
     // shooterSys.Proximity();
 
-    if (oi.joy.getRawButtonPressed(3)) {
-      s_turret.resetEncoder();
-    }
+    // if (oi.joy.getRawButtonPressed(3)) {
+    //   s_turret.resetEncoder();
+    // }
 
     turretVal = oi.getLeftTurretAxis();
     turretVal2 = oi.getRightTurretAxis();
     turretVal2 = turretVal - turretVal2;
-    
     s_turret.setTurretSpeed(turretVal2);
+    // c_moveByxDegrees = new MoveByxDegreesCommand(s_turret, 0);
+
+    s_turret.shooter(oi.getShooter()); 
    
 
     

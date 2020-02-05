@@ -46,8 +46,8 @@ public class JoystickCommand extends CommandBase {
               driveSys.lowGear();
             // else if(oi.getlBumper())
             //   scomm.execute();
-            else if(oi.getrBumper())
-              driveSys.resetGyro();
+            // else if(oi.getrBumper())
+            //   driveSys.resetGyro();
 
     }
 

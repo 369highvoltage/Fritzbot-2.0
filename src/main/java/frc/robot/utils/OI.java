@@ -30,11 +30,17 @@ public class OI extends SubsystemBase {
         return joy.getRawButton(4);
     }
 
-    public boolean getlBumper() {
-        return joy.getRawButton(5);
+    public double getShooter() { //reutrs motor speed value from button, for left shooting falcon
+        double shooterSpeed;
+        if (joy.getRawButton(5)){
+            shooterSpeed = 1.0;}
+            else {
+              shooterSpeed = 0.0;
+            }
+        return shooterSpeed;
     }
 
-    public boolean getrBumper() {
+    public boolean getrShooter() { 
         return joy.getRawButton(6);
     }
 
