@@ -77,14 +77,14 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void shooter(double speed){
-    m_shooterL.set(-speed*0.25);
-    m_shooterR.set(speed*0.25);
+    m_shooterL.set(-speed);
+    m_shooterR.set(speed);
+
   }
 
   public void encoderVal(){
     double position = m_turret.getSelectedSensorPosition(0);
     System.out.println("encoder position " + position);
-    System.out.println(" do you even save bro? ");
   }
 
   
