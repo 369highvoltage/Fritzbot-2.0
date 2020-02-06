@@ -231,6 +231,7 @@ public class Robot extends TimedRobot {
     // c_moveByxDegrees = new MoveByxDegreesCommand(s_turret, 0);
 
     s_turret.shooter(oi.getShooter()); 
+    s_turret.encoderVal();
    
 
     

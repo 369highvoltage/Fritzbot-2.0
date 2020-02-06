@@ -20,10 +20,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTable;
 import com.revrobotics.*;
 import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 
 public class TurretSubsystem extends SubsystemBase {
-  SpeedController m_turret;
+  WPI_TalonSRX m_turret;
   SpeedController m_shooterL;
   SpeedController m_shooterR;
   // public AnalogInput e_turret;
@@ -45,6 +46,7 @@ public class TurretSubsystem extends SubsystemBase {
     m_shooterL = new WPI_TalonFX(1);
     m_shooterR = new WPI_TalonFX(2);
     m_turret = new WPI_TalonSRX(0);
+    m_turret.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
   }
 
   public void resetEncoder() {
@@ -75,8 +77,14 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void shooter(double speed){
-    m_shooterL.set(-speed);
-    m_shooterR.set(speed);
+    m_shooterL.set(-speed*0.25);
+    m_shooterR.set(speed*0.25);
+  }
+
+  public void encoderVal(){
+    double position = m_turret.getSelectedSensorPosition(0);
+    System.out.println("encoder position " + position);
+    System.out.println(" do you even save bro? ");
   }
 
   
