@@ -16,6 +16,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.JoystickCommand;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.*; //imports all the commnads
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.CameraSubsystem.CameraMode;
 import frc.robot.subsystems.CameraSubsystem.LightMode;
@@ -58,6 +59,8 @@ public class Robot extends TimedRobot {
     public MoveByxDegreesCommand c_moveByxDegrees;
     TalonSRX m_shooter;
     double shooterSpeedL;
+    Talon m_feeder;
+    public ShootingCommand c_shooting;
   // private ShootingCommand scomm;
  // private JoystickCommand jcomm;
 
@@ -90,8 +93,9 @@ public class Robot extends TimedRobot {
     cam = new CameraSubsystem();
     oi = new OI();
     driveCommand = new DriveCommand(driveSys, oi);
-    m_shooter = new TalonSRX(0);
-    
+    c_shooting = new ShootingCommand();
+    // m_shooter = new TalonSRX(0);
+   
     // scomm = new ShootingCommand(shooterSys);
    // jcomm = new JoystickCommand(driveSys, shooterSys, oi, scomm);
     cam.Vision();
@@ -149,10 +153,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
   //  shooterSys.Proximity();
-   double leftAdjust = -1.0;
+   double leftAdjust = -1.0; 
    double rightAdjust = -1.0; // default speed values for chase
    leftAdjust -= aimbot();
    rightAdjust += aimbot();
+
+ 
    
     // if(shooterSys.getProximity() >= 120)
     //   driveSys.control(0, 0, 1);
@@ -215,6 +221,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    // m_feeder.set(1.0);
     // limelight.debug();
     
     // shooterSys.ColorSensor();
@@ -230,12 +237,13 @@ public class Robot extends TimedRobot {
     s_turret.setTurretSpeed(turretVal2*0.25);
     // c_moveByxDegrees = new MoveByxDegreesCommand(s_turret, 0);
 
-    s_turret.shooter(oi.getShooter()); 
+ 
     s_turret.encoderVal();
-   
-
+    if (oi.joy.getRawButtonPressed(6)){
+    c_shooting.schedule();}
     
-
+  //   s_turret.shooter(oi.getShooter()); //l1
+  //  s_turret.feeder(oi.joy.getRawButton(6));
     
   }
 

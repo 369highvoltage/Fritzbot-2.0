@@ -8,32 +8,49 @@
 package frc.robot.commands;
 //this command enaables the feeder and then the shooter in order to shoot them lemons, aim first
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Talon; //Talon SP
+import com.ctre.phoenix.motorcontrol.can.*; //Talon FX
+import com.ctre.phoenix.motorcontrol.NeutralMode; //Neutral mode for the Falcons
+import edu.wpi.first.wpilibj.Timer;
 
 
 
 public class ShootingCommand extends CommandBase {
-  public Talon m_feeder;
-  //public Talon m_shooterLeft;
-  //public Talon m_shooterRight;
+  Talon m_feeder;
+  WPI_TalonFX m_shooterL;
+  WPI_TalonFX m_shooterR;
+  Timer timer;
+
   public ShootingCommand() {
    m_feeder = new Talon(5);
-   //m
-
+   m_shooterL = new WPI_TalonFX(1);
+   m_shooterR = new WPI_TalonFX(2);
+   m_shooterL.setNeutralMode(NeutralMode.Brake);
+   m_shooterR.setNeutralMode(NeutralMode.Brake);
   }
 
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    //set feeder motor to max
+    timer.start();
+    m_shooterL.set(-0.75);
+    m_shooterR.set(0.75);
+    //set shooter motor to desired max
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    //continue setting feeder motor to max
-    //set shooting motors, one to max, one to max reversed
+   if(timer.get() >= 2){
+    m_shooterL.set(-0.75);
+    m_shooterR.set(0.75);
+    m_feeder.set(-0.75);}
+    
+
+
+    //continue setting shooter motors to max
+    //set feeder motors to max
   }
 
 
@@ -41,13 +58,16 @@ public class ShootingCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     //set all 3 motors to zero
+    m_shooterL.set(0.0);
+    m_shooterR.set(0.0);
+    m_feeder.set(0.0);
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.get() == 5;
   }
 
 }
