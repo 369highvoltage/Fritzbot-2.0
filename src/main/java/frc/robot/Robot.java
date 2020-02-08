@@ -21,6 +21,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.CameraSubsystem.CameraMode;
 import frc.robot.subsystems.CameraSubsystem.LightMode;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.MusicSubsystem;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.OI;
 import edu.wpi.first.wpilibj.Joystick;
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
   //public SpeedControllerGroup rightSide;
   private RobotContainer m_robotContainer;
   private DriveSubsystem driveSys;
+  private MusicSubsystem musicSys;
   // private ShooterSubsystem shooterSys;
   private DriveCommand driveCommand;
   private CameraSubsystem cam;
@@ -83,6 +85,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+
     m_robotContainer = new RobotContainer();
     dualShock = new Joystick(0);
     dualShock2 = new Joystick(1);
@@ -94,11 +97,12 @@ public class Robot extends TimedRobot {
     oi = new OI();
     driveCommand = new DriveCommand(driveSys, oi);
     c_shooting = new ShootingCommand();
-    // m_shooter = new TalonSRX(0);
-   
-    // scomm = new ShootingCommand(shooterSys);
-   // jcomm = new JoystickCommand(driveSys, shooterSys, oi, scomm);
+    musicSys = new MusicSubsystem();
+  // m_shooter = new TalonSRX(0);
+  // scomm = new ShootingCommand(shooterSys);
+  // jcomm = new JoystickCommand(driveSys, shooterSys, oi, scomm);
     cam.Vision();
+    musicSys.playTheMarch();
   }
 
   /**
@@ -155,22 +159,20 @@ public class Robot extends TimedRobot {
   //  shooterSys.Proximity();
    double leftAdjust = -1.0; 
    double rightAdjust = -1.0; // default speed values for chase
+   double mindistance = 5;
    leftAdjust -= aimbot();
    rightAdjust += aimbot();
 
- 
-   
-    // if(shooterSys.getProximity() >= 120)
-    //   driveSys.control(0, 0, 1);
-
-    // else{
-    //   if(cam.isTarget() == false){
-    //     driveSys.highGear();
-    //    driveSys.control(-.5, .5, 1);
-    //   }else if((cam.isTarget() == true)){
-    //        driveSys.control(leftAdjust, rightAdjust, 1);
-    //      }
-    // }
+    if(Math.abs(cam.getTy()) <= mindistance){
+      driveSys.control(0, 0, 1);
+    }else{
+      if(cam.isTarget() == false){
+        driveSys.highGear();
+        driveSys.control(-.5, .5, .5);
+      }else if((cam.isTarget() == true)){
+        driveSys.control(leftAdjust, rightAdjust, 1);
+        }
+    }
       
 
 
