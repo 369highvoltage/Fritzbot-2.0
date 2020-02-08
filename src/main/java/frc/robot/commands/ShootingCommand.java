@@ -21,18 +21,22 @@ public class ShootingCommand extends CommandBase {
   WPI_TalonFX m_shooterR;
   Timer timer;
 
+  
   public ShootingCommand() {
    m_feeder = new Talon(5);
    m_shooterL = new WPI_TalonFX(1);
    m_shooterR = new WPI_TalonFX(2);
    m_shooterL.setNeutralMode(NeutralMode.Brake);
    m_shooterR.setNeutralMode(NeutralMode.Brake);
+   timer = new Timer();
   }
 
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    timer.start();
+   
+    timer.start();//make timer be smth get old code, stephon showed me what to do before
+    
     m_shooterL.set(-0.75);
     m_shooterR.set(0.75);
     //set shooter motor to desired max
@@ -42,10 +46,11 @@ public class ShootingCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-   if(timer.get() >= 2){
+   if(timer.get() >= 1){
     m_shooterL.set(-0.75);
     m_shooterR.set(0.75);
     m_feeder.set(-0.75);}
+    System.out.println("time " + timer.get());
     
 
 
@@ -67,7 +72,8 @@ public class ShootingCommand extends CommandBase {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
-    return timer.get() == 5;
+   return (timer.get() >= 5);
+    
   }
 
 }
