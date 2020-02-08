@@ -234,7 +234,7 @@ public class Robot extends TimedRobot {
     turretVal = oi.getLeftTurretAxis();
     turretVal2 = oi.getRightTurretAxis();
     turretVal2 = turretVal - turretVal2;
-    s_turret.setTurretSpeed(turretVal2*0.25);
+    s_turret.setTurretSpeed(turretVal2);
     // c_moveByxDegrees = new MoveByxDegreesCommand(s_turret, 0);
 
  

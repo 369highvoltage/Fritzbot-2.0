@@ -61,14 +61,14 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
  // -1 ... 1
-  public void setTurretSpeed(double speed){
+  public void setTurretSpeed(double speed){ //sets and regulates turret speed
     if (speed > 1) {
       speed = 1;
     }
     else if (speed < -1) {
       speed = -1;
     }
-    m_turret.set(speed);
+    m_turret.set(speed*0.25); //might be a little too fast
   }
 
     public double getEncoderVal(){
@@ -95,9 +95,10 @@ public class TurretSubsystem extends SubsystemBase {
 
   // }
 
-  public void encoderVal(){
+  public double encoderVal(){ //gets the value of the turret magnetic encoder
     double position = m_turret.getSelectedSensorPosition(0);
     System.out.println("encoder position " + position);
+    return position;
   }
 
 
