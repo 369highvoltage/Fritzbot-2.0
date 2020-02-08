@@ -155,22 +155,20 @@ public class Robot extends TimedRobot {
   //  shooterSys.Proximity();
    double leftAdjust = -1.0; 
    double rightAdjust = -1.0; // default speed values for chase
+   double mindistance = 5;
    leftAdjust -= aimbot();
    rightAdjust += aimbot();
-
- 
    
-    // if(shooterSys.getProximity() >= 120)
-    //   driveSys.control(0, 0, 1);
-
-    // else{
-    //   if(cam.isTarget() == false){
-    //     driveSys.highGear();
-    //    driveSys.control(-.5, .5, 1);
-    //   }else if((cam.isTarget() == true)){
-    //        driveSys.control(leftAdjust, rightAdjust, 1);
-    //      }
-    // }
+     if(Math.abs(cam.getTy()) <= mindistance){
+     driveSys.control(0, 0, 1);
+     }else{
+       if(cam.isTarget() == false){
+        driveSys.highGear();
+        driveSys.control(-.5, .5, 1);
+      }else if((cam.isTarget() == true)){
+        driveSys.control(leftAdjust, rightAdjust, 1);
+        }
+    }
       
 
 
