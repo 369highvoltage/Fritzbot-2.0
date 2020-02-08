@@ -35,7 +35,7 @@ String[] songs = new String[] {
 };
 public void playTheMarch(){
 orchestra.loadMusic(songs[1]);
+orchestra.play();
     } 
-
 }
 

@@ -158,13 +158,13 @@ public class Robot extends TimedRobot {
    double mindistance = 5;
    leftAdjust -= aimbot();
    rightAdjust += aimbot();
-   
-     if(Math.abs(cam.getTy()) <= mindistance){
-     driveSys.control(0, 0, 1);
-     }else{
-       if(cam.isTarget() == false){
+
+    if(Math.abs(cam.getTy()) <= mindistance){
+      driveSys.control(0, 0, 1);
+    }else{
+      if(cam.isTarget() == false){
         driveSys.highGear();
-        driveSys.control(-.5, .5, 1);
+        driveSys.control(-.5, .5, .5);
       }else if((cam.isTarget() == true)){
         driveSys.control(leftAdjust, rightAdjust, 1);
         }
