@@ -15,13 +15,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.JoystickCommand;
 import frc.robot.subsystems.CameraSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.*; //imports all the commnads
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.CameraSubsystem.CameraMode;
 import frc.robot.subsystems.CameraSubsystem.LightMode;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.MusicSubsystem;
+import frc.robot.commands.*; //imports all the commnads
 import frc.robot.utils.Limelight;
 import frc.robot.utils.OI;
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,8 +28,12 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.commands.MoveByxDegreesCommand;
 import edu.wpi.first.wpilibj.Talon;
-import com.ctre.phoenix.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.*;
+import java.util.ArrayList;
+import com.ctre.phoenix.music.Orchestra;
+
 
 
 /**
@@ -49,22 +52,25 @@ public class Robot extends TimedRobot {
   //public SpeedControllerGroup rightSide;
   private RobotContainer m_robotContainer;
   private DriveSubsystem driveSys;
-  private MusicSubsystem musicSys;
   // private ShooterSubsystem shooterSys;
   private DriveCommand driveCommand;
   private CameraSubsystem cam;
   private Limelight limelight;
-    private OI oi;
-    private TurretSubsystem s_turret;
-    double turretVal;
-    double turretVal2;
-    public MoveByxDegreesCommand c_moveByxDegrees;
-    TalonSRX m_shooter;
-    double shooterSpeedL;
-    Talon m_feeder;
-    public ShootingCommand c_shooting;
-  // private ShootingCommand scomm;
- // private JoystickCommand jcomm;
+  private OI oi;
+  private TurretSubsystem s_turret;
+  double turretVal;
+  double turretVal2;
+  public MoveByxDegreesCommand c_moveByxDegrees;
+  TalonSRX m_shooter;
+  double shooterSpeedL;
+  Talon m_feeder;
+  public ShootingCommand c_shooting;
+  
+  Orchestra _orchestra;
+  TalonFX [] _fxes =  { new TalonFX(1), new TalonFX(2) };
+
+// private ShootingCommand scomm;
+// private JoystickCommand jcomm;
 
   /**public static enum LightMode {
 		eOn, eOff, eBlink
@@ -72,15 +78,17 @@ public class Robot extends TimedRobot {
   
 	public static enum CameraMode {
 		eVision, eDriver
-	} */
-
-
-
-
+  } */
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+  void LoadMusic()
+    {
+        /* load the chirp file */
+        _orchestra.loadMusic("Imperial_March.chrp"); 
+    }
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -97,12 +105,20 @@ public class Robot extends TimedRobot {
     oi = new OI();
     driveCommand = new DriveCommand(driveSys, oi);
     c_shooting = new ShootingCommand();
-    musicSys = new MusicSubsystem();
+
   // m_shooter = new TalonSRX(0);
   // scomm = new ShootingCommand(shooterSys);
   // jcomm = new JoystickCommand(driveSys, shooterSys, oi, scomm);
     cam.Vision();
-    musicSys.playTheMarch();
+    
+    ArrayList<TalonFX> _instruments = new ArrayList<TalonFX>();
+      
+        /* Initialize the TalonFX's to be used */
+        for (int i = 0; i < _fxes.length; ++i) {
+            _instruments.add(_fxes[i]);
+        }
+        /* Create the orchestra with the TalonFX instruments */
+        _orchestra = new Orchestra(_instruments);
   }
 
   /**
@@ -246,7 +262,8 @@ public class Robot extends TimedRobot {
     
   //   s_turret.shooter(oi.getShooter()); //l1
   //  s_turret.feeder(oi.joy.getRawButton(6));
-    
+    LoadMusic();
+    _orchestra.play();
   }
 
   @Override
