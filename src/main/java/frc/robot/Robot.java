@@ -23,6 +23,7 @@ import frc.robot.subsystems.CameraSubsystem.LightMode;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.OI;
+import frc.robot.utils.ProximitySensor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -52,6 +53,7 @@ public class Robot extends TimedRobot {
   private DriveCommand driveCommand;
   private CameraSubsystem cam;
   private Limelight limelight;
+  private ProximitySensor proximity_sensor;
     private OI oi;
     private TurretSubsystem s_turret;
     double turretVal;
@@ -92,6 +94,7 @@ public class Robot extends TimedRobot {
     s_turret = new TurretSubsystem();
     cam = new CameraSubsystem();
     oi = new OI();
+    proximity_sensor = new ProximitySensor();
     driveCommand = new DriveCommand(driveSys, oi);
     c_shooting = new ShootingCommand();
     // m_shooter = new TalonSRX(0);
@@ -143,8 +146,8 @@ public class Robot extends TimedRobot {
     //driveSys.autoCont();
     System.out.println("Passed init");
 
-    cam.setCameraMode(CameraMode.eVision);
-    cam.setLedMode(LightMode.eOn);
+    // cam.setCameraMode(CameraMode.eVision);
+    // cam.setLedMode(LightMode.eOn);
   }
 
   /**
@@ -205,10 +208,10 @@ public class Robot extends TimedRobot {
     } 
     driveCommand.initialize();
     // shooterSys.dropShooter();
-    limelight.setCameraMode("vision");
-    limelight.setLed("off");
-    cam.setLedMode(LightMode.eOff);
-    cam.setCameraMode(CameraMode.eDriver);
+    // limelight.setCameraMode("vision");
+    // limelight.setLed("off");
+    // cam.setLedMode(LightMode.eOff);
+    // cam.setCameraMode(CameraMode.eDriver);
 
     driveSys.setDefaultCommand(driveCommand);
     new JoystickButton(oi.joy, 4)
@@ -241,6 +244,9 @@ public class Robot extends TimedRobot {
     s_turret.encoderVal();
     if (oi.joy.getRawButtonPressed(6)){
     c_shooting.schedule();}
+
+    proximity_sensor.updateDashboard();
+
     
   //   s_turret.shooter(oi.getShooter()); //l1
   //  s_turret.feeder(oi.joy.getRawButton(6));
