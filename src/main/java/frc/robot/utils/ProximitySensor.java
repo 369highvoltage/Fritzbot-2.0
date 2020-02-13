@@ -17,7 +17,7 @@ public class ProximitySensor {
   
   // TODO - You will need to determine how to convert voltage to distance
   // (use information from the data sheet, or your own measurements)
-  private static final double VOLTS_TO_DIST = 1.0;
+  private static final double VOLTS_TO_DIST = 35.0;
 
   public static double getVoltage() {
     return mb1013.getVoltage();
